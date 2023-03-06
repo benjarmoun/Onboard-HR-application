@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @Getter
 public class EmployeeLoggedIn {
-    private Employee epmloyee;
+    private Employee employee;
     private String Token;
 }

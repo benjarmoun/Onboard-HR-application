@@ -23,7 +23,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class JWTAuthFilter extends OncePerRequestFilter {
 
 
-    private final EmployeeService customerService;
+    private final EmployeeService employeeService;
     private final JwtUtils jwtUtils;
 
     @Override
@@ -43,7 +43,7 @@ public class JWTAuthFilter extends OncePerRequestFilter {
         jwtToken = authHeader.substring(7);
         userEmail = jwtUtils.extractUsername(jwtToken);
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null){
-            UserDetails userDetails = customerService.findByEmail(userEmail);
+            UserDetails userDetails = employeeService.findByEmail(userEmail);
             if(userDetails != null){
                 if(jwtUtils.isTokenValid(jwtToken, userDetails)){
                     UsernamePasswordAuthenticationToken authToken =

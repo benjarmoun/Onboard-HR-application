@@ -27,7 +27,7 @@ public class SecurityConfig {
 
     private final JWTAuthFilter jwtAuthFilter;
 
-    private final EmployeeService customerService;
+    private final EmployeeService employeeService;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
             http
@@ -43,7 +43,7 @@ public class SecurityConfig {
                     .requestMatchers("/rh/**").hasAnyAuthority(Enum.role.RH.toString())
                     .and()
                     .authorizeHttpRequests()
-                    .requestMatchers("/customer/**").hasAnyAuthority(Enum.role.Employee.toString())
+                    .requestMatchers("/employee/**").hasAnyAuthority(Enum.role.Employee.toString())
                     .anyRequest()
                     .authenticated()
                     .and()
@@ -74,7 +74,7 @@ public class SecurityConfig {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-                return customerService.findByEmail(email);
+                return employeeService.findByEmail(email);
             }
         };
     }

@@ -16,49 +16,57 @@ import java.util.Optional;
 
 @Service
 public class EmployeeService {
-    private final EmployeeRepository customerRepository;
+    private final EmployeeRepository employeeRepository;
 
     @Autowired
-    public EmployeeService(EmployeeRepository customerRepository) {
-        this.customerRepository = customerRepository;
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
-    public Employee save(Employee customer){
-        return customerRepository.save(customer);
+    public Employee save(Employee employee){
+        return employeeRepository.save(employee);
     }
 
-    public List<Employee> getAllCustomers(){
-        return customerRepository.findAll();
+    public List<Employee> getAllemployees(){
+        return employeeRepository.findAll();
     }
 
 
-    public Employee getCustomerById(Long id){
-        Optional customer = customerRepository.findById(id);
-        return customer.isPresent()? (Employee) customer.get() : null;
+    public Employee getEmployeeById(Long id){
+        Optional employee = employeeRepository.findById(id);
+        return employee.isPresent()? (Employee) employee.get() : null;
     }
 
-    public Employee getCustomerByEmail(String email){
-        System.out.println("wa7ed");
-        Optional customer = customerRepository.findByEmail(email);
-        System.out.println("jouj "+customer);
-        return customer.isPresent() ? (Employee) customer.get() : null;
+    public Employee getEmployeeByEmail(String email){
+        Optional employee = employeeRepository.findByEmail(email);
+        return employee.isPresent() ? (Employee) employee.get() : null;
     }
 
-    public void deleteCustomerById(Long id){
-        if(getCustomerById(id) != null)
-            customerRepository.deleteById(id);
+    public void deleteEmployeeById(Long id){
+        if(getEmployeeById(id) != null)
+            employeeRepository.deleteById(id);
     }
 
 
     public UserDetails findByEmail(String email) {
-        Employee user = customerRepository.findAll()
+        Employee user = employeeRepository.findAll()
                 .stream()
                 .filter(u -> (u.getEmail()).equals(email))
                 .findFirst()
                 .orElse(null);
-        return user != null ? new User(
-                user.getEmail(),
-                user.getPassword(),
-                Collections.singleton(new SimpleGrantedAuthority(Enum.role.Employee.toString()))) : null ;
+
+        System.out.println(user);
+        if(user != null && user.getRole().equals(Enum.role.Employee.toString())){
+            return new User(
+                    user.getEmail(),
+                    user.getPassword(),
+                    Collections.singleton(new SimpleGrantedAuthority(Enum.role.Employee.toString())));
+        } else if (user.getRole().equals(Enum.role.RH.toString())) {
+            return new User(
+                    user.getEmail(),
+                    user.getPassword(),
+                    Collections.singleton(new SimpleGrantedAuthority(Enum.role.RH.toString())));
+        }
+    return null;
     }
 }

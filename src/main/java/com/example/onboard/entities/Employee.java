@@ -17,11 +17,11 @@ public class Employee {
 
     @Basic
     @Column(name = "fname", nullable = false)
-    private String fName;
+    private String fname;
 
     @Basic
     @Column(name = "lname", nullable = false)
-    private String lName;
+    private String lname;
 
     @Basic
     @Column(name = "email", nullable = false, unique = true)
@@ -45,8 +45,32 @@ public class Employee {
 
     @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "contract_id")
+    @JoinColumn(name = "contract_id", nullable = true)
     private Contract contract;
 
+    public Employee(String fName, String lName, String email, String password, String phone, String address, String role, Contract contract) {
+        this.fname = fName;
+        this.lname = lName;
+        this.email = email;
+        this.password = password;
+        this.phone = phone;
+        this.address = address;
+        this.role = role;
+        this.contract = contract;
+    }
 
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", fName='" + fname + '\'' +
+                ", lName='" + lname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", role='" + role + '\'' +
+                ", contract=" + contract +
+                '}';
+    }
 }
